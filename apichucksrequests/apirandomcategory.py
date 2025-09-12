@@ -12,6 +12,7 @@ class CreateRandomJokeTest():
     url = "https://api.chucknorris.io/jokes/random"
 
     def test_single_positive_category(self, category, expected_status_code):
+       #Тестирование позитивных кейсов одной категории
         path_random_joke_category = f"?category={category}"
         url_random_joke_category = self.url + path_random_joke_category
         print(url_random_joke_category)
@@ -35,12 +36,13 @@ class CreateRandomJokeTest():
         print("Успешный тест.")
 
     def test_all_categories(self):
-    
+    #Тестирование позитивных кейсов всех категорий из categories 
         for category in self.categories:
             print(f'Тестовая категория: {category}')
             self.test_single_positive_category(category, 200)
 
     def test_single_negative_category(self, category, expected_status_code):
+        #Тестирование негативных кейсов невалидной категории
         path_random_joke_category = f"?category={category}"
         url_random_joke_category = self.url + path_random_joke_category
         print(url_random_joke_category)
@@ -66,10 +68,11 @@ class CreateRandomJokeTest():
             print(joke_data)
    
     def test_negative_scenarios(self):
-    
+    #Тестирование негативных кейсов невалидной категории
         negative_cases = [
             ('invalid_category', 404),
             ('test', 404),
+            ('spor', 404),
             ('', 404)
         ]
 
