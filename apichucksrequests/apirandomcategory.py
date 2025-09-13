@@ -2,14 +2,11 @@ import requests
 
 class CreateRandomJokeTest():
     def __init__(self):
+        self.categories = self.get_categories_api()
 
-        self.categories = [
-    'animal', 'career', 'celebrity', 'dev', 'explicit', 'fashion', 
-    'food', 'history', 'money', 'movie', 'music', 'political', 
-    'religion', 'science', 'sport', 'travel'
-]
-
-    url = "https://api.chucknorris.io/jokes/random"
+    def get_categories_api(self):
+        categories_url = "https://api.chucknorris.io/jokes/categories"
+        print("Получены категории из API categories GET")
 
     def test_single_positive_category(self, category, expected_status_code):
        #Тестирование позитивных кейсов одной категории
@@ -82,5 +79,6 @@ class CreateRandomJokeTest():
 
 
 random_category_joke = CreateRandomJokeTest()
+random_category_joke.get_categories_api()
 random_category_joke.test_all_categories()
 random_category_joke.test_negative_scenarios()
