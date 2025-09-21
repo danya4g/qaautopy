@@ -29,12 +29,7 @@ class UserInputCategories():
         except AssertionError:
             print("Ошибка. Ожидался статус код {expected_status_code}, получен {result.status_code}")
             return []
-# Обработка ошибок на отсутствие категорий
    
-
-        except requests.exceptions.RequestException as e:
-            print("Ошибка при получении категорий: {e}") 
-            return []
 # Тестирование категорий, введенных пользователем.
     def user_input_category(self):
         user_category = str(input().strip())
