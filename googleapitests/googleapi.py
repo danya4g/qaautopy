@@ -61,8 +61,7 @@ class Test_New_Location():
         put_resource = "/maps/api/place/update/json"
         put_url = base_url + put_resource + key
         print(put_url)
-        new_address = json_for_create_new_location["address"] + \
-            "Zhukovsokogo 19"
+        new_address = "Zhukovsokogo 19"
         json_for_update_new_location = {
             "place_id": place_id,
             "address": new_address,
@@ -108,7 +107,22 @@ class Test_New_Location():
         print("Сообщение: " + check_status_info)
         assert check_status_info == "OK"
         print("Сообщение верно")
+        
+        """Проверка удаления новой локации"""
+        result_get = requests.get(get_url)
+        print(result_get.json())
 
+        check_response_get = result_get.json()
+        print(f'Статус код: {result_get.status_code}')
+        assert result_get.status_code == 404, 'Ошибка, статус код не совпадает'
+        print("Статус код GET корректен")
+
+        check_msg = result_get.json()
+        check_msg_info = check_msg.get("msg")
+        print("Сообщение: " + check_msg_info)
+        assert check_msg_info == "Get operation failed, looks like place_id  doesn't exists"
+        print("Сообщение верно")
+        print("Тестирование Test_New_Location завершено успешно")
+        
 new_place = Test_New_Location()
-
 new_place.test_create_new_location()
