@@ -53,7 +53,7 @@ class Test_New_Location():
             file.seek(0)  
             content = file.read() 
             print(content)
-
+        """Проверяем POST и статус код"""
         check_post = result_post.json()
         check_info_post = check_post.get("status")
         print(f'Статус код ответа: {check_info_post}')
@@ -64,6 +64,7 @@ class Test_New_Location():
               
         """Получение GET локаций, но place_id берем из файла"""
         get_resource = "/maps/api/place/get/json"
+        """Перебираем список из файла с первого индекса"""
         for i, place_id in enumerate(all_place_ids, 1): 
             get_url = base_url + get_resource + key + "&place_id=" + place_id
             print(f'{i}:{get_url}')
