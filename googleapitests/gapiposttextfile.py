@@ -38,8 +38,6 @@ class Test_New_Location():
         """Создаем и читаем текстовый файл, в который отправим значения метода POST"""
        
         filename = 'post_response_ids.txt'
-        all_place_ids = [] #Сохраняем ID для дальнейших проверок id файлов
-        
         with open (filename, 'w+', encoding='utf-8') as file:
             for i in range(5):
                 result_post = requests.post(post_url, json=json_for_create_new_location)
@@ -48,33 +46,35 @@ class Test_New_Location():
                 post_data = result_post.json()
                 place_id = post_data.get("place_id")
                 file.write(f'{place_id}\n')
-                all_place_ids.append(place_id)
-             
+                
             file.seek(0)  
             content = file.read() 
             print(content)
+
         """Проверяем POST и статус код"""
         check_post = result_post.json()
         check_info_post = check_post.get("status")
         print(f'Статус код ответа: {check_info_post}')
         assert check_info_post == "OK"
         print("Статус код корректен")
-        # place_id = check_post.get("place_id")
-        print(f'Place_id: {place_id}')
-              
+                   
         """Получение GET локаций, но place_id берем из файла"""
         get_resource = "/maps/api/place/get/json"
         """Перебираем список из файла с первого индекса"""
-        for i, place_id in enumerate(all_place_ids, 1): 
-            get_url = base_url + get_resource + key + "&place_id=" + place_id
-            print(f'{i}:{get_url}')
-            result_get = requests.get(get_url)
-            result_get.raise_for_status()
-            print(result_get.text)
-            print(f'Статус код: {result_get.status_code}')
-            assert 200 == result_get.status_code
-            print("Проверка создания локации прошла успешно!")
-        
+        with open(filename, 'r+', encoding='utf-8') as file:
+             for i, line in enumerate(file, 1): 
+                 print(f'Локации: {i}:{line.strip()}') #Выводим все созданные локации из файла
+                 place_id = line.strip()
+                 if place_id:
+                    get_url = base_url + get_resource + key + "&place_id=" + place_id
+                    print(f'{i}:{get_url}')
+                    result_get = requests.get(get_url)
+                    result_get.raise_for_status()
+                    print(result_get.text)
+                    print(f'Статус код: {result_get.status_code}')
+                    assert 200 == result_get.status_code
+                    print("Проверка создания локации прошла успешно!")
+            
         print("Локации созданы и проверены успешно")
 
 run_test = Test_New_Location()
